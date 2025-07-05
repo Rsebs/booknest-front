@@ -9,17 +9,29 @@ const routes: RouteRecordRaw[] = [
     component: MainLayout,
     children: [
       {
-        path: '/',
+        path: '',
         name: 'home',
         component: HomeView,
       },
       {
-        path: '/about',
-        name: 'about',
-        // route level code-splitting
-        // this generates a separate chunk (About.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import('../views/AboutView.vue'),
+        path: 'explore',
+        name: 'explore',
+        component: () => import('@/views/ExploreView.vue'),
+      },
+      {
+        path: 'search',
+        name: 'search',
+        component: () => import('@/views/SearchView.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/ProfileView.vue'),
+      },
+      {
+        path: 'publish',
+        name: 'publish',
+        component: () => import('@/views/PublishView.vue'),
       },
     ],
   },

@@ -6,8 +6,6 @@ export function transformFeature(feature: ApiFeature): Feature {
     id: feature.id,
     name: feature.name,
     icon: feature.icon,
-    route: {
-      name: feature.path_name,
-    },
+    routeName: feature.route_name,
   };
 }

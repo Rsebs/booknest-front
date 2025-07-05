@@ -5,8 +5,9 @@
         <v-list-item
           v-for="feature in features"
           :key="feature.id"
+          :active="$route.name === feature.routeName"
           :title="feature.name"
-          :to="feature.route"
+          :to="{ name: feature.routeName }"
           link
         >
           <template #prepend>

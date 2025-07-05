@@ -1,7 +1,7 @@
 export interface ApiFeature {
   id: number;
   name: string;
-  path_name: string;
+  route_name: string;
   icon: string;
   description: string;
   enabled: number;
