@@ -4,10 +4,10 @@
       <v-list nav>
         <v-list-item
           v-for="feature in features"
-          :key="feature.route.name"
+          :key="feature.id"
           :title="feature.name"
+          :to="feature.route"
           link
-          @click="$router.push(feature.route)"
         >
           <template #prepend>
             <v-avatar>
@@ -23,31 +23,20 @@
       </template>
     </v-app-bar>
     <v-main>
-      <v-container>
-        <router-view />
-      </v-container>
+      <router-view />
     </v-main>
   </v-layout>
 </template>
 
 <script lang="ts" setup>
-import type { Features } from '@/interfaces/features.interface';
-const { mobile } = useDisplay();
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useDisplay } from 'vuetify';
+import { useFeatures } from '@/composables/useFeature';
 
+const { mobile } = useDisplay();
 const drawer = ref(!mobile.value);
 
-const features: Features[] = [
-  {
-    name: 'Home Page',
-    icon: 'mdi-home',
-    route: { name: 'home' },
-  },
-  {
-    name: 'About Page',
-    icon: 'mdi-information',
-    route: { name: 'about' },
-  },
-];
+const { features, getFeatures } = useFeatures();
+
+onMounted(getFeatures);
 </script>
