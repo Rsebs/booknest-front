@@ -20,7 +20,13 @@
           @click="isLogin = !isLogin"
         />
 
-        <v-btn type="submit" color="primary" variant="elevated" :text="getSubmitText(isLogin)" />
+        <v-btn
+          type="submit"
+          color="primary"
+          variant="elevated"
+          :text="getSubmitText(isLogin)"
+          :loading
+        />
       </v-card-actions>
     </v-card>
   </v-form>
@@ -28,8 +34,8 @@
 
 <script setup lang="ts">
 import { inputComponentMap } from '../inputs/inputComponentMap';
-import { loginUser } from '@/api/services/auth.service';
 import { ref, watch, type Ref } from 'vue';
+import { useUserStore } from '@/stores/userStore';
 import type { BodyLoginForm, BodyRegisterForm } from './types/auth-form.type';
 import type { Input } from '../inputs/types/input-union.type';
 
@@ -41,8 +47,11 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'login',
 });
 
+const userStore = useUserStore();
+
 type FormType = Props['type'] extends 'login' ? BodyLoginForm : BodyRegisterForm;
 const isLogin = ref(props.type === 'login');
+const loading = ref(false);
 
 const bodyForm: Ref<FormType> = ref({
   email: '',
@@ -104,8 +113,11 @@ const onSubmitAuth = async () => {
     return;
   }
 
-  const user = await loginUser(bodyForm.value.email, bodyForm.value.password);
-  console.log(user);
+  loading.value = true;
+  if (isLogin.value) await userStore.login(bodyForm.value.email, bodyForm.value.password);
+  else console.log('Registrarse...');
+
+  loading.value = false;
 };
 
 watch(isLogin, (newValue) => {
