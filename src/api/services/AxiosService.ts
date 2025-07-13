@@ -15,4 +15,12 @@ export default class AxiosService {
   ): Promise<ApiResponse<T>> {
     return this.axiosInstance.get(url, { params }).then((response) => response.data);
   }
+
+  static async post<T = unknown>(
+    url: string,
+    data?: Record<string, unknown>,
+    params?: Record<string, unknown>,
+  ): Promise<ApiResponse<T>> {
+    return this.axiosInstance.post(url, data, { params }).then((response) => response.data);
+  }
 }

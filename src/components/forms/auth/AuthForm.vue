@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { inputComponentMap } from '../inputs/inputComponentMap';
+import { loginUser } from '@/api/services/auth.service';
 import { ref, watch, type Ref } from 'vue';
 import type { BodyLoginForm, BodyRegisterForm } from './types/auth-form.type';
 import type { Input } from '../inputs/types/input-union.type';
@@ -98,13 +99,13 @@ const inputs = ref(isLogin.value ? getLoginInputs() : getRegisterInputs());
 
 const getSubmitText = (isLogin: boolean) => (isLogin ? 'Iniciar sesión' : 'Registrarse');
 
-const onSubmitAuth = () => {
+const onSubmitAuth = async () => {
   if (!bodyForm.value.email && !bodyForm.value.password) {
     return;
   }
 
-  console.log('Email:', bodyForm.value.email);
-  console.log('Password:', bodyForm.value.password);
+  const user = await loginUser(bodyForm.value.email, bodyForm.value.password);
+  console.log(user);
 };
 
 watch(isLogin, (newValue) => {
