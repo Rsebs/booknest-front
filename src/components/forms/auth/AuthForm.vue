@@ -33,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import { handleApiError } from '@/utils/handleApiError';
 import { inputComponentMap } from '../inputs/inputComponentMap';
 import { ref, watch, type Ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
@@ -111,24 +112,29 @@ const inputs = ref(isLogin.value ? getLoginInputs() : getRegisterInputs());
 const getSubmitText = (isLogin: boolean) => (isLogin ? 'Iniciar sesión' : 'Registrarse');
 
 const onSubmitAuth = async () => {
-  if (!bodyForm.value.email && !bodyForm.value.password) {
-    return;
-  }
+  try {
+    loading.value = true;
+    if (!bodyForm.value.email && !bodyForm.value.password) {
+      return;
+    }
 
-  loading.value = true;
-  if (isLogin.value) {
-    await userStore.login(bodyForm.value.email, bodyForm.value.password);
-  } else {
-    await userStore.register(
-      bodyForm.value.name,
-      bodyForm.value.email,
-      bodyForm.value.password,
-      bodyForm.value.confirmPassword,
-    );
-  }
+    if (isLogin.value) {
+      await userStore.login(bodyForm.value.email, bodyForm.value.password);
+    } else {
+      await userStore.register(
+        bodyForm.value.name,
+        bodyForm.value.email,
+        bodyForm.value.password,
+        bodyForm.value.confirmPassword,
+      );
+    }
 
-  loading.value = false;
-  emits('isAuthenticated', userStore.isAuthenticated);
+    emits('isAuthenticated', userStore.isAuthenticated);
+  } catch (error) {
+    handleApiError(error);
+  } finally {
+    loading.value = false;
+  }
 };
 
 watch(isLogin, (newValue) => {
