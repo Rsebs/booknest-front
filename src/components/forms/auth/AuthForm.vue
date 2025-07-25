@@ -62,6 +62,8 @@ const bodyForm: Ref<FormType> = ref({
   }),
 } as FormType);
 
+const emits = defineEmits(['isAuthenticated']);
+
 const getLoginInputs = (): Input<BodyLoginForm>[] => [
   {
     component: 'TextInput',
@@ -114,10 +116,19 @@ const onSubmitAuth = async () => {
   }
 
   loading.value = true;
-  if (isLogin.value) await userStore.login(bodyForm.value.email, bodyForm.value.password);
-  else console.log('Registrarse...');
+  if (isLogin.value) {
+    await userStore.login(bodyForm.value.email, bodyForm.value.password);
+  } else {
+    await userStore.register(
+      bodyForm.value.name,
+      bodyForm.value.email,
+      bodyForm.value.password,
+      bodyForm.value.confirmPassword,
+    );
+  }
 
   loading.value = false;
+  emits('isAuthenticated', userStore.isAuthenticated);
 };
 
 watch(isLogin, (newValue) => {

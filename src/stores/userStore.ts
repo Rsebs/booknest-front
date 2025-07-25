@@ -23,14 +23,40 @@ export const useUserStore = defineStore(
     const isAuthenticated = computed(() => !!apiToken.value);
 
     // Actions
-    async function login(email: string, password: string): Promise<User> {
+    async function login(email: string, password: string): Promise<boolean> {
       const response = await AxiosService.post<ApiLoginUser>('login', { email, password });
       const transformedUser = transformUser(response.data);
 
       user.value = transformedUser;
       apiToken.value = response.data.api_token;
 
-      return transformedUser;
+      return isAuthenticated.value;
+    }
+
+    async function register(
+      name: string,
+      email: string,
+      password: string,
+      passwordConfirmation: string,
+    ): Promise<boolean> {
+      const response = await AxiosService.post<ApiLoginUser>('register', {
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+      });
+
+      const transformedUser = transformUser(response.data);
+      user.value = transformedUser;
+      apiToken.value = response.data.api_token;
+
+      return isAuthenticated.value;
+    }
+
+    async function logout() {
+      await AxiosService.post('logout');
+      user.value = userNotLogged;
+      apiToken.value = null;
     }
 
     return {
@@ -43,6 +69,8 @@ export const useUserStore = defineStore(
 
       // Actions
       login,
+      register,
+      logout,
     };
   },
   {

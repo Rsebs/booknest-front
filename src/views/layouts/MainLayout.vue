@@ -24,15 +24,21 @@
       </template>
 
       <template #append>
-        <v-btn color="secondary" text="Registrarse" @click="openModalAuth('register')" />
-        <v-btn color="primary" text="Iniciar sesión" @click="openModalAuth('login')" />
+        <template v-if="!userStore.isAuthenticated">
+          <v-btn color="secondary" text="Registrarse" @click="openModalAuth('register')" />
+          <v-btn color="primary" text="Iniciar sesión" @click="openModalAuth('login')" />
+        </template>
+        <template v-else>
+          <v-btn color="primary" text="Mi perfil" :to="{ name: 'profile' }" />
+          <v-btn color="secondary" text="Cerrar sesión" @click="userStore.logout" />
+        </template>
       </template>
     </v-app-bar>
     <v-main>
       <router-view />
 
       <v-dialog v-model="openModal" max-width="500">
-        <auth-form :type="typeAuth" />
+        <auth-form :type="typeAuth" @is-authenticated="(val) => (openModal = !val)" />
       </v-dialog>
     </v-main>
   </v-layout>
@@ -43,6 +49,9 @@ import { onMounted, ref, type Ref } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useFeatures } from '@/composables/useFeature';
 import AuthForm from '@/components/forms/auth/AuthForm.vue';
+import { useUserStore } from '../../stores/userStore';
+
+const userStore = useUserStore();
 
 const { mobile } = useDisplay();
 const drawer = ref(!mobile.value);

@@ -1,4 +1,5 @@
 import type { ApiResponse } from '@/api/types/axiosResponse.type';
+import { useUserStore } from '@/stores/userStore';
 import axios, { type AxiosInstance } from 'axios';
 
 export default class AxiosService {
@@ -8,6 +9,16 @@ export default class AxiosService {
       'Content-Type': 'application/json',
     },
   });
+
+  static initialize() {
+    this.axiosInstance.interceptors.request.use((config) => {
+      const userStore = useUserStore();
+      if (userStore.isAuthenticated) {
+        config.headers.Authorization = `Bearer ${userStore.apiToken}`;
+      }
+      return config;
+    });
+  }
 
   static async get<T = unknown>(
     url: string,
