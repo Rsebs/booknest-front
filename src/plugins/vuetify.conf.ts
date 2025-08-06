@@ -10,4 +10,15 @@ export default createVuetify({
   icons: {
     defaultSet: 'mdi',
   },
+  theme: {
+    defaultTheme: 'system',
+    themes: {
+      light: {
+        dark: false,
+      },
+      dark: {
+        dark: true,
+      },
+    },
+  },
 });

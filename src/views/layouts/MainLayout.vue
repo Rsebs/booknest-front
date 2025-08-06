@@ -24,6 +24,10 @@
       </template>
 
       <template #append>
+        <v-btn :prepend-icon="iconTheme" slim @click="toggleTheme">
+          <v-tooltip text="Cambiar de tema" activator="parent" location="bottom" />
+        </v-btn>
+
         <template v-if="!userStore.isAuthenticated">
           <v-btn color="secondary" text="Registrarse" @click="openModalAuth('register')" />
           <v-btn color="primary" text="Iniciar sesión" @click="openModalAuth('login')" />
@@ -45,8 +49,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, type Ref } from 'vue';
-import { useDisplay } from 'vuetify';
+import { computed, onMounted, ref, type Ref } from 'vue';
+import { useDisplay, useTheme } from 'vuetify';
 import { useFeatures } from '@/composables/useFeature';
 import AuthForm from '@/components/forms/auth/AuthForm.vue';
 import { useUserStore } from '../../stores/userStore';
@@ -55,6 +59,14 @@ const userStore = useUserStore();
 
 const { mobile } = useDisplay();
 const drawer = ref(!mobile.value);
+
+const theme = useTheme();
+const toggleTheme = () => {
+  theme.global.name.value = theme.global.name.value === 'light' ? 'dark' : 'light';
+};
+const iconTheme = computed(() =>
+  theme.global.name.value === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night',
+);
 
 const { features, getFeatures } = useFeatures();
 
