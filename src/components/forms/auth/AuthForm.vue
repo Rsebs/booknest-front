@@ -1,7 +1,7 @@
 <template>
   <v-form @submit.prevent="onSubmitAuth">
     <v-card class="pa-6">
-      <v-card-title>{{ isLogin ? 'Iniciar sesión' : 'Registrarse' }}</v-card-title>
+      <v-card-title>{{ isLogin ? $t('login') : $t('register') }}</v-card-title>
       <v-card-text>
         <component
           v-for="input in inputs"
@@ -36,6 +36,7 @@
 import { handleApiError } from '@/utils/handleApiError';
 import { inputComponentMap } from '../inputs/inputComponentMap';
 import { ref, watch, type Ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useUserStore } from '@/stores/userStore';
 import type { BodyLoginForm, BodyRegisterForm } from './types/auth-form.type';
 import type { Input } from '../inputs/types/input-union.type';
@@ -48,6 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'login',
 });
 
+const { t } = useI18n();
 const userStore = useUserStore();
 
 type FormType = Props['type'] extends 'login' ? BodyLoginForm : BodyRegisterForm;
@@ -68,13 +70,13 @@ const emits = defineEmits(['isAuthenticated']);
 const getLoginInputs = (): Input<BodyLoginForm>[] => [
   {
     component: 'TextInput',
-    label: 'Email',
+    label: t('email'),
     type: 'email',
     key: 'email',
   },
   {
     component: 'TextInput',
-    label: 'Contraseña',
+    label: t('password'),
     type: 'password',
     key: 'password',
   },
@@ -83,25 +85,25 @@ const getLoginInputs = (): Input<BodyLoginForm>[] => [
 const getRegisterInputs = (): Input<BodyRegisterForm>[] => [
   {
     component: 'TextInput',
-    label: 'Nombre',
+    label: t('name'),
     key: 'name',
     type: 'text',
   },
   {
     component: 'TextInput',
-    label: 'Email',
+    label: t('email'),
     type: 'email',
     key: 'email',
   },
   {
     component: 'TextInput',
-    label: 'Contraseña',
+    label: t('password'),
     type: 'password',
     key: 'password',
   },
   {
     component: 'TextInput',
-    label: 'Confirmar contraseña',
+    label: t('confirmPassword'),
     type: 'password',
     key: 'confirmPassword',
   },
@@ -109,7 +111,7 @@ const getRegisterInputs = (): Input<BodyRegisterForm>[] => [
 
 const inputs = ref(isLogin.value ? getLoginInputs() : getRegisterInputs());
 
-const getSubmitText = (isLogin: boolean) => (isLogin ? 'Iniciar sesión' : 'Registrarse');
+const getSubmitText = (isLogin: boolean) => (isLogin ? t('login') : t('register'));
 
 const onSubmitAuth = async () => {
   try {

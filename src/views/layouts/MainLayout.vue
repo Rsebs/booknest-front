@@ -24,18 +24,37 @@
       </template>
 
       <template #append>
-        <v-btn :prepend-icon="iconTheme" slim @click="toggleTheme">
-          <v-tooltip text="Cambiar de tema" activator="parent" location="bottom" />
-        </v-btn>
-
         <template v-if="!userStore.isAuthenticated">
-          <v-btn color="secondary" text="Registrarse" @click="openModalAuth('register')" />
-          <v-btn color="primary" text="Iniciar sesión" @click="openModalAuth('login')" />
+          <v-btn color="secondary" :text="$t('register')" @click="openModalAuth('register')" />
+          <v-btn color="primary" :text="$t('login')" @click="openModalAuth('login')" />
         </template>
         <template v-else>
-          <v-btn color="primary" text="Mi perfil" :to="{ name: 'profile' }" />
-          <v-btn color="secondary" text="Cerrar sesión" @click="userStore.logout" />
+          <v-btn color="primary" :text="$t('myProfile')" :to="{ name: 'profile' }" />
+          <v-btn color="secondary" :text="$t('logout')" @click="userStore.logout" />
         </template>
+
+        <v-menu transition="slide-y-transition">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon="mdi-translate" />
+          </template>
+          <v-list>
+            <v-list-subheader>{{ $t('translations') }}</v-list-subheader>
+
+            <v-list-item
+              v-for="(lang, i) in availableLocales"
+              :key="i"
+              :value="i"
+              :active="lang.code === currentLang"
+              @click="locale = lang.code"
+            >
+              <v-list-item-title>{{ lang.name }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
+        <v-btn :prepend-icon="iconTheme" slim @click="toggleTheme">
+          <v-tooltip :text="$t('toggleTheme')" activator="parent" location="bottom" />
+        </v-btn>
       </template>
     </v-app-bar>
     <v-main>
@@ -49,11 +68,13 @@
 </template>
 
 <script lang="ts" setup>
+import { availableLocales } from '../../lang/availableLocales';
 import { computed, onMounted, ref, type Ref } from 'vue';
 import { useDisplay, useTheme } from 'vuetify';
 import { useFeatures } from '@/composables/useFeature';
-import AuthForm from '@/components/forms/auth/AuthForm.vue';
+import { useI18n } from 'vue-i18n';
 import { useUserStore } from '../../stores/userStore';
+import AuthForm from '@/components/forms/auth/AuthForm.vue';
 
 const userStore = useUserStore();
 
@@ -67,6 +88,9 @@ const toggleTheme = () => {
 const iconTheme = computed(() =>
   theme.global.name.value === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night',
 );
+
+const { locale } = useI18n();
+const currentLang = computed(() => locale.value);
 
 const { features, getFeatures } = useFeatures();
 
