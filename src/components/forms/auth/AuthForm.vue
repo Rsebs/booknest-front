@@ -116,9 +116,6 @@ const getSubmitText = (isLogin: boolean) => (isLogin ? t('login') : t('register'
 const onSubmitAuth = async () => {
   try {
     loading.value = true;
-    if (!bodyForm.value.email && !bodyForm.value.password) {
-      return;
-    }
 
     if (isLogin.value) {
       await userStore.login(bodyForm.value.email, bodyForm.value.password);
