@@ -11,10 +11,19 @@ export default createVuetify({
     defaultSet: 'mdi',
   },
   theme: {
-    defaultTheme: 'system',
+    // defaultTheme: 'system',
+    defaultTheme: 'light',
     themes: {
       light: {
         dark: false,
+        colors: {
+          background: '#F4F1EC',
+          primary: '#8B3B27',
+        },
+        variables: {
+          'font-primary': '"DM Sans", sans-serif',
+          'font-secondary': '"Noto Serif JP", serif',
+        },
       },
       dark: {
         dark: true,

@@ -1,62 +1,30 @@
 <template>
   <v-layout>
-    <v-navigation-drawer v-model="drawer" elevation="1">
-      <v-list nav>
-        <v-list-item
-          v-for="feature in features"
-          :key="feature.id"
-          :active="$route.name === feature.routeName"
-          :title="feature.name"
-          :to="{ name: feature.routeName }"
-          link
-        >
-          <template #prepend>
-            <v-avatar>
-              <v-icon color="primary" :icon="feature.icon" />
-            </v-avatar>
-          </template>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar title="Book Nest" app elevation="1">
-      <template #prepend>
-        <v-btn icon="mdi-menu" @click="drawer = !drawer" />
+    <v-app-bar border elevation="0" color="#F3F0EA" class="px-3 pt-3">
+      <template #title>
+        <p class="font-secondary font-weight-semibold">
+          Book<span class="text-primary">nest</span>
+        </p>
       </template>
 
       <template #append>
-        <template v-if="!userStore.isAuthenticated">
-          <v-btn color="secondary" :text="$t('register')" @click="openModalAuth('register')" />
-          <v-btn color="primary" :text="$t('login')" @click="openModalAuth('login')" />
-        </template>
-        <template v-else>
-          <v-btn color="primary" :text="$t('myProfile')" :to="{ name: 'profile' }" />
-          <v-btn color="secondary" :text="$t('logout')" @click="userStore.logout" />
-        </template>
+        <v-btn icon="mdi-shopping-outline" variant="text" class="mr-4" />
+        <v-btn
+          :text="$t('enter')"
+          color="primary"
+          rounded="xl"
+          variant="flat"
+          @click="openModalAuth('login')"
+        />
+      </template>
 
-        <v-menu transition="slide-y-transition">
-          <template v-slot:activator="{ props }">
-            <v-btn v-bind="props" icon="mdi-translate" />
-          </template>
-          <v-list>
-            <v-list-subheader>{{ $t('translations') }}</v-list-subheader>
-
-            <v-list-item
-              v-for="(lang, i) in availableLocales"
-              :key="i"
-              :value="i"
-              :active="lang.code === currentLang"
-              @click="locale = lang.code"
-            >
-              <v-list-item-title>{{ lang.name }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-
-        <v-btn :prepend-icon="iconTheme" slim @click="toggleTheme">
-          <v-tooltip :text="$t('toggleTheme')" activator="parent" location="bottom" />
-        </v-btn>
+      <template #extension>
+        <v-tabs color="primary">
+          <v-tab v-for="(tab, i) in tabs" :key="i" :text="$t(tab.title)" exact :to="tab.to" />
+        </v-tabs>
       </template>
     </v-app-bar>
+
     <v-main>
       <router-view />
 
@@ -68,31 +36,8 @@
 </template>
 
 <script lang="ts" setup>
-import { availableLocales } from '../../lang/availableLocales';
-import { computed, onMounted, ref, type Ref } from 'vue';
-import { useDisplay, useTheme } from 'vuetify';
-import { useFeatures } from '@/composables/useFeature';
-import { useI18n } from 'vue-i18n';
-import { useUserStore } from '../../stores/userStore';
+import { ref, type Ref } from 'vue';
 import AuthForm from '@/components/forms/auth/AuthForm.vue';
-
-const userStore = useUserStore();
-
-const { mobile } = useDisplay();
-const drawer = ref(!mobile.value);
-
-const theme = useTheme();
-const toggleTheme = () => {
-  theme.global.name.value = theme.global.name.value === 'light' ? 'dark' : 'light';
-};
-const iconTheme = computed(() =>
-  theme.global.name.value === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night',
-);
-
-const { locale } = useI18n();
-const currentLang = computed(() => locale.value);
-
-const { features, getFeatures } = useFeatures();
 
 type AuthType = 'login' | 'register';
 const openModal = ref(false);
@@ -103,5 +48,8 @@ const openModalAuth = (typeModal: AuthType) => {
   typeAuth.value = typeModal;
 };
 
-onMounted(getFeatures);
+const tabs = ref([
+  { title: 'home', to: { name: 'home' } },
+  { title: 'catalog', to: { name: 'catalog' } },
+]);
 </script>

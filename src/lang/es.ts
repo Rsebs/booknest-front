@@ -12,4 +12,7 @@ export default {
   password: 'Contraseña',
   confirmPassword: 'Confirmar Contraseña',
   translations: 'Traducciones',
+  enter: 'Entrar',
+  catalog: 'Catálogo',
+  explore: 'Explorar',
 } as const;

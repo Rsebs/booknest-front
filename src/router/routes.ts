@@ -14,24 +14,9 @@ const routes: RouteRecordRaw[] = [
         component: HomeView,
       },
       {
-        path: 'explore',
-        name: 'explore',
-        component: () => import('@/views/ExploreView.vue'),
-      },
-      {
-        path: 'search',
-        name: 'search',
-        component: () => import('@/views/SearchView.vue'),
-      },
-      {
-        path: 'profile',
-        name: 'profile',
-        component: () => import('@/views/ProfileView.vue'),
-      },
-      {
-        path: 'publish',
-        name: 'publish',
-        component: () => import('@/views/PublishView.vue'),
+        path: 'catalog',
+        name: 'catalog',
+        component: () => import('@/views/CatalogView.vue'),
       },
     ],
   },

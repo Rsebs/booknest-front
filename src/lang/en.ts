@@ -12,4 +12,7 @@ export default {
   password: 'Password',
   confirmPassword: 'Confirm Password',
   translations: 'Translations',
+  enter: 'Enter',
+  catalog: 'Catalog',
+  explore: 'Explore',
 } as const;
