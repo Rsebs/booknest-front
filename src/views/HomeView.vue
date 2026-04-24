@@ -1,13 +1,13 @@
 <template>
-  <section class="container my-8 py-16 text-center">
-    <span :class="`text-uppercase font-weight-light ${classCenter}`">
+  <v-container class="my-8 py-16 text-center">
+    <span class="text-uppercase font-weight-light">
       <v-icon icon="mdi-shimmer" /> Una librería para tardes lentas
     </span>
-    <h1 :class="`font-weight-semibold mb-6 mt-2 ${classCenter}`">
+    <h1 class="font-weight-semibold mb-6 mt-2">
       Piérdete en una tarde más
       <span class="font-italic text-primary font-weight-semibold">silenciosa</span>.
     </h1>
-    <p :class="`my-2 ${classCenter} font-weight-light`">
+    <p class="my-2 font-weight-light">
       Volúmenes cuidadosamente seleccionados, clásicos olvidados y voces contemporáneas pensadas
       para leer despacio.
     </p>
@@ -18,7 +18,6 @@
       color="primary"
       placeholder="Busca por autor, título o estado de ánimo..."
       prepend-inner-icon="mdi-magnify"
-      required
       rounded="xl"
       variant="outlined"
       class="input-search my-8"
@@ -30,14 +29,12 @@
         </v-btn>
       </template>
     </v-text-field>
-  </section>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-const classCenter = 'mx-md-16 px-md-16';
 
 const router = useRouter();
 const search = ref('');

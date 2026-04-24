@@ -14,5 +14,8 @@ export default {
   translations: 'Translations',
   enter: 'Enter',
   catalog: 'Catalog',
+  catalogDescription: 'Explore all the available volumes.',
   explore: 'Explore',
+  category: 'Category',
+  by: 'By',
 } as const;
