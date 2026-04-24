@@ -24,6 +24,16 @@
           <v-col v-for="book in books" :key="book.id" cols="12" sm="6" md="4" lg="3">
             <CardBookPreview :book="book" />
           </v-col>
+
+          <v-col cols="12" class="text-center">
+            <v-pagination
+              v-if="metaBooks.last_page > 1"
+              v-model="metaBooks.current_page"
+              :length="metaBooks.last_page"
+              :total-visible="7"
+              @update:modelValue="getBooks"
+            />
+          </v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -41,7 +51,7 @@ import CardBookPreview from '@/components/CardBookPreview.vue';
 
 const { t } = useI18n();
 
-const { books, getBooks, loading } = useBook();
+const { books, metaBooks, getBooks, loading } = useBook();
 const {
   lookups: categories,
   getLookups: getCategories,

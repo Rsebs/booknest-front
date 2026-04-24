@@ -2,8 +2,19 @@ export interface ApiResponse<T = unknown> {
   status: string;
   message: string;
   data: T;
+  meta: APIPaginate | null;
   code: number;
 }
+
+export interface APIPaginate {
+  current_page: number;
+  per_page: number;
+  total: number;
+  last_page: number;
+  next_page: string | null;
+  prev_page: string | null;
+}
+
 export interface ApiErroResponse {
   status: string;
   message: string;

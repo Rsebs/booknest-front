@@ -17,6 +17,7 @@ export default class AxiosService {
         config.headers.Authorization = `Bearer ${userStore.apiToken}`;
       }
       config.params = {
+        ...(config.params || {}),
         locale: 'es',
       };
       return config;
