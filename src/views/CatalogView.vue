@@ -34,23 +34,23 @@
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import { useBook } from '../composables/useBook';
 import { useI18n } from 'vue-i18n';
-import { useSelectOption } from '@/composables/useSelectOption';
+import { useLookup } from '@/composables/useLookup';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-import type { SelectOption } from '@/models/selectOption.model';
+import type { Lookup } from '@/models/lookup.model';
 import CardBookPreview from '@/components/CardBookPreview.vue';
 
 const { t } = useI18n();
 
 const { books, getBooks, loading } = useBook();
 const {
-  selectOptions: categories,
-  getSelectOption: getCategories,
+  lookups: categories,
+  getLookups: getCategories,
   loading: loadingCategories,
-} = useSelectOption('category');
+} = useLookup('category');
 
 interface IBodySearch {
   search: string;
-  categories: SelectOption[];
+  categories: Lookup[];
   sortBy: string;
   priceRange: [number, number];
 }

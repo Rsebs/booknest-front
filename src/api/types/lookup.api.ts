@@ -1,4 +1,4 @@
-export interface SelectOption {
+export interface ApiLookup {
   id: number;
   value: string;
 }
