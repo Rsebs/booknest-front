@@ -33,6 +33,23 @@
       </v-dialog>
     </v-main>
   </v-layout>
+  <v-footer color="#F3F0EA" border height="auto">
+    <v-container>
+      <v-row justify="space-between" align="center">
+        <v-col>
+          <div>
+            <p class="font-weight-semibold font-secondary">Booknest</p>
+            <p class="font-weight-light">Una librería para tardes lentas.</p>
+          </div>
+        </v-col>
+        <v-col class="text-center text-md-right">
+          <p class="font-weight-light text-disabled" :style="{ fontSize: '0.9rem' }">
+            &copy; {{ new Date().getFullYear() }} BOOKNEST
+          </p>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-footer>
 </template>
 
 <script lang="ts" setup>
