@@ -34,7 +34,7 @@
   </v-main>
 
   <!-- Featured -->
-  <section class="my-8">
+  <section class="my-8" v-if="books.length > 0">
     <v-container>
       <div class="border-b pb-5 mb-14">
         <v-row>
@@ -81,11 +81,18 @@
         </v-row>
       </div>
 
-      <v-row>
+      <v-row v-if="books.length > 0">
         <v-col cols="12" sm="3" v-for="book in books" :key="book.id">
           <CardBookPreview :book="book" />
         </v-col>
       </v-row>
+      <div v-else class="text-center">
+        <h3 class="py-2">Aún no hay libros en los anaqueles.</h3>
+
+        <p class="py-2 text-disabled">
+          ¿Eres autor? <a href="#" class="text-primary text-decoration-none">Únete</a> y publica el primero.
+        </p>
+      </div>
     </v-container>
   </section>
 </template>

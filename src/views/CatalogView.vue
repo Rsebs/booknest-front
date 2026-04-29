@@ -1,10 +1,12 @@
 <template>
   <v-main>
     <v-container class="my-8 py-16">
-      <v-row>
+      <div class="mb-8">
+        <h1 class="font-weight-semibold my-3">{{ $t('catalog') }}</h1>
+        <p class="my-3 font-weight-light">{{ $t('catalogDescription') }}</p>
+      </div>
+      <v-row align="stretch">
         <v-col cols="12" sm="4" lg="3">
-          <h1 class="font-weight-semibold my-3">{{ $t('catalog') }}</h1>
-          <p class="my-3 font-weight-light">{{ $t('catalogDescription') }}</p>
           <component
             :is="input.name"
             v-for="input in inputsSearch"
@@ -21,19 +23,27 @@
             </v-col>
           </v-row>
 
-          <v-row v-else>
-            <v-col v-for="book in books" :key="book.id" cols="12" sm="6" md="4" lg="3">
-              <CardBookPreview :book="book" />
-            </v-col>
+          <v-row v-else class="h-100">
+            <template v-if="books.length">
+              <v-col v-for="book in books" :key="book.id" cols="12" sm="6" md="4" lg="3">
+                <CardBookPreview :book="book" />
+              </v-col>
 
-            <v-col cols="12" class="text-center">
-              <v-pagination
-                v-if="metaBooks.last_page > 1"
-                v-model="metaBooks.current_page"
-                :length="metaBooks.last_page"
-                :total-visible="7"
-                @update:modelValue="getBooks"
-              />
+              <v-col cols="12" class="text-center">
+                <v-pagination
+                  v-if="metaBooks.last_page > 1"
+                  v-model="metaBooks.current_page"
+                  :length="metaBooks.last_page"
+                  :total-visible="7"
+                  @update:modelValue="getBooks"
+                />
+              </v-col>
+            </template>
+            <v-col v-else class="h-100">
+              <v-sheet class="d-flex flex-column align-center justify-center h-100" border rounded color="background">
+                <h3>Sin resultados</h3>
+                <p class="text-disabled">Prueba ajustando los filtros.</p>
+              </v-sheet>
             </v-col>
           </v-row>
         </v-col>
