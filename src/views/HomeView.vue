@@ -1,6 +1,6 @@
 <template>
-  <v-container class="my-8 py-16 text-center">
-    <v-main class="my-16 py-8">
+  <v-main class="my-16">
+    <v-container class="text-center">
       <span class="text-uppercase font-weight-light">
         <v-icon icon="mdi-shimmer" /> Una librería para tardes lentas
       </span>
@@ -30,10 +30,12 @@
           </v-btn>
         </template>
       </v-text-field>
-    </v-main>
+    </v-container>
+  </v-main>
 
-    <!-- Featured -->
-    <section class="py-8">
+  <!-- Featured -->
+  <section class="my-8">
+    <v-container>
       <div class="border-b pb-5 mb-14">
         <v-row>
           <v-col class="text-left">
@@ -56,10 +58,12 @@
           <CardBookPreview :book="book" />
         </v-col>
       </v-row>
-    </section>
+    </v-container>
+  </section>
 
-    <!-- Latest -->
-    <section class="my-16">
+  <!-- Latest -->
+  <section class="my-8">
+    <v-container>
       <div class="border-b pb-5 mb-14">
         <v-row>
           <v-col class="text-left">
@@ -82,8 +86,8 @@
           <CardBookPreview :book="book" />
         </v-col>
       </v-row>
-    </section>
-  </v-container>
+    </v-container>
+  </section>
 </template>
 
 <script lang="ts" setup>

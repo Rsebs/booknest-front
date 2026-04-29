@@ -1,6 +1,6 @@
 <template>
-  <v-layout>
-    <v-app-bar border elevation="0" color="#F3F0EA" class="px-3 pt-3">
+  <v-app>
+    <v-app-bar border elevation="0" color="background" class="px-3">
       <template #title>
         <router-link :to="{ name: 'home' }" class="text-decoration-none text-black">
           <p class="font-secondary font-weight-semibold">
@@ -32,24 +32,27 @@
     <v-dialog v-model="openModal" max-width="500">
       <auth-form :type="typeAuth" @is-authenticated="(val) => (openModal = !val)" />
     </v-dialog>
-  </v-layout>
-  <v-footer color="#F3F0EA" border height="auto">
-    <v-container>
-      <v-row justify="space-between" align="center">
-        <v-col>
-          <div>
-            <p class="font-weight-semibold font-secondary">Booknest</p>
-            <p class="font-weight-light">Una librería para tardes lentas.</p>
-          </div>
-        </v-col>
-        <v-col class="text-center text-md-right">
-          <p class="font-weight-light text-disabled" :style="{ fontSize: '0.9rem' }">
-            &copy; {{ new Date().getFullYear() }} BOOKNEST
-          </p>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-footer>
+
+    <v-footer color="background" name="footer" border height="auto" class="mt-8">
+      <v-container>
+        <v-row justify="space-between" align="center">
+          <v-col>
+            <div>
+              <p class="font-weight-semibold font-secondary">Booknest</p>
+              <p class="font-weight-light text-disabled" :style="{ fontSize: '0.9rem' }">
+                Una librería para tardes lentas.
+              </p>
+            </div>
+          </v-col>
+          <v-col class="text-center text-md-right">
+            <p class="font-weight-light text-disabled" :style="{ fontSize: '0.9rem' }">
+              &copy; {{ new Date().getFullYear() }} BOOKNEST
+            </p>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-footer>
+  </v-app>
 </template>
 
 <script lang="ts" setup>
