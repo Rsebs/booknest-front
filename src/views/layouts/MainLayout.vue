@@ -2,9 +2,11 @@
   <v-layout>
     <v-app-bar border elevation="0" color="#F3F0EA" class="px-3 pt-3">
       <template #title>
-        <p class="font-secondary font-weight-semibold">
-          Book<span class="text-primary">nest</span>
-        </p>
+        <router-link :to="{ name: 'home' }" class="text-decoration-none text-black">
+          <p class="font-secondary font-weight-semibold">
+            Book<span class="text-primary">nest</span>
+          </p>
+        </router-link>
       </template>
 
       <template #append>
@@ -25,13 +27,11 @@
       </template>
     </v-app-bar>
 
-    <v-main>
-      <router-view />
+    <router-view />
 
-      <v-dialog v-model="openModal" max-width="500">
-        <auth-form :type="typeAuth" @is-authenticated="(val) => (openModal = !val)" />
-      </v-dialog>
-    </v-main>
+    <v-dialog v-model="openModal" max-width="500">
+      <auth-form :type="typeAuth" @is-authenticated="(val) => (openModal = !val)" />
+    </v-dialog>
   </v-layout>
   <v-footer color="#F3F0EA" border height="auto">
     <v-container>

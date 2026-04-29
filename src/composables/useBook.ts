@@ -9,10 +9,10 @@ export function useBook() {
   const loading = ref(false);
   const error = ref<unknown>(null);
 
-  const getBooks = async (page: number = 1) => {
+  const getBooks = async (page: number = 1, perPage: number = 12) => {
     try {
       loading.value = true;
-      const response = await fetchBooks(page);
+      const response = await fetchBooks(page, perPage);
       books.value = response.data;
       metaBooks.value = response.meta as APIPaginate;
     } catch (err) {

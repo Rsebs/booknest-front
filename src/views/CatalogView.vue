@@ -1,43 +1,45 @@
 <template>
-  <v-container class="my-8 py-16">
-    <v-row>
-      <v-col cols="12" sm="4" lg="3">
-        <h1 class="font-weight-semibold my-3">{{ $t('catalog') }}</h1>
-        <p class="my-3 font-weight-light">{{ $t('catalogDescription') }}</p>
-        <component
-          :is="input.name"
-          v-for="input in inputsSearch"
-          :key="input.name"
-          v-model="bodySearch[input.key]"
-          v-bind="input.props"
-        />
-      </v-col>
+  <v-main>
+    <v-container class="my-8 py-16">
+      <v-row>
+        <v-col cols="12" sm="4" lg="3">
+          <h1 class="font-weight-semibold my-3">{{ $t('catalog') }}</h1>
+          <p class="my-3 font-weight-light">{{ $t('catalogDescription') }}</p>
+          <component
+            :is="input.name"
+            v-for="input in inputsSearch"
+            :key="input.name"
+            v-model="bodySearch[input.key]"
+            v-bind="input.props"
+          />
+        </v-col>
 
-      <v-col cols="12" sm="8" lg="9">
-        <v-row v-if="loading" justify="center" align="center" class="h-100">
-          <v-col cols="auto">
-            <loading-spinner />
-          </v-col>
-        </v-row>
+        <v-col cols="12" sm="8" lg="9">
+          <v-row v-if="loading" justify="center" align="center" class="h-100">
+            <v-col cols="auto">
+              <loading-spinner />
+            </v-col>
+          </v-row>
 
-        <v-row v-else>
-          <v-col v-for="book in books" :key="book.id" cols="12" sm="6" md="4" lg="3">
-            <CardBookPreview :book="book" />
-          </v-col>
+          <v-row v-else>
+            <v-col v-for="book in books" :key="book.id" cols="12" sm="6" md="4" lg="3">
+              <CardBookPreview :book="book" />
+            </v-col>
 
-          <v-col cols="12" class="text-center">
-            <v-pagination
-              v-if="metaBooks.last_page > 1"
-              v-model="metaBooks.current_page"
-              :length="metaBooks.last_page"
-              :total-visible="7"
-              @update:modelValue="getBooks"
-            />
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+            <v-col cols="12" class="text-center">
+              <v-pagination
+                v-if="metaBooks.last_page > 1"
+                v-model="metaBooks.current_page"
+                :length="metaBooks.last_page"
+                :total-visible="7"
+                @update:modelValue="getBooks"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 
 <script setup lang="ts">
