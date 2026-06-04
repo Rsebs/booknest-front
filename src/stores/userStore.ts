@@ -4,6 +4,7 @@ import { transformUser } from '@/api/transformers/auth.transformer';
 import AxiosService from '@/api/services/AxiosService';
 import type { ApiLoginUser } from '@/api/types/auth.api';
 import type { User } from '@/models/user.model';
+import { showToast } from '@/utils/vue3Toastify';
 
 export const useUserStore = defineStore(
   'user',
@@ -30,16 +31,18 @@ export const useUserStore = defineStore(
       user.value = transformedUser;
       apiToken.value = response.data.api_token;
 
+      showToast(`Bienvenido, ${user.value.name}`);
+
       return isAuthenticated.value;
     }
 
-    async function register(
+    async function signup(
       name: string,
       email: string,
       password: string,
       passwordConfirmation: string,
     ): Promise<boolean> {
-      const response = await AxiosService.post<ApiLoginUser>('register', {
+      const response = await AxiosService.post<ApiLoginUser>('signup', {
         name,
         email,
         password,
@@ -49,6 +52,8 @@ export const useUserStore = defineStore(
       const transformedUser = transformUser(response.data);
       user.value = transformedUser;
       apiToken.value = response.data.api_token;
+
+      showToast(`Bienvenido, ${user.value.name}`);
 
       return isAuthenticated.value;
     }
@@ -69,7 +74,7 @@ export const useUserStore = defineStore(
 
       // Actions
       login,
-      register,
+      signup,
       logout,
     };
   },

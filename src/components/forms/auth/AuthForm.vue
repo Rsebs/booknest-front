@@ -10,6 +10,7 @@
           :key="input.key"
           :label="input.label"
           :type="input.type"
+          :appendIcon="input?.appendIcon"
         />
       </v-card-text>
       <v-card-actions>
@@ -67,6 +68,24 @@ const bodyForm: Ref<FormType> = ref({
 
 const emits = defineEmits(['isAuthenticated']);
 
+const togglePasswordVisibility = (key: string) => {
+  const indexInputPassword = inputs.value.findIndex((input) => input.key === key);
+  if (inputs.value[indexInputPassword].type === 'password') {
+    inputs.value[indexInputPassword].type = 'text';
+    inputs.value[indexInputPassword].appendIcon!.icon = 'mdi-eye-off';
+    return;
+  }
+
+  inputs.value[indexInputPassword].type = 'password';
+  inputs.value[indexInputPassword].appendIcon!.icon = 'mdi-eye';
+};
+
+const appendIconProp = (key: string) => ({
+  icon: 'mdi-eye',
+  action: () => {
+    togglePasswordVisibility(key);
+  },
+});
 const getLoginInputs = (): Input<BodyLoginForm>[] => [
   {
     component: 'TextInput',
@@ -79,6 +98,7 @@ const getLoginInputs = (): Input<BodyLoginForm>[] => [
     label: t('password'),
     type: 'password',
     key: 'password',
+    appendIcon: appendIconProp('password'),
   },
 ];
 
@@ -100,12 +120,14 @@ const getRegisterInputs = (): Input<BodyRegisterForm>[] => [
     label: t('password'),
     type: 'password',
     key: 'password',
+    appendIcon: appendIconProp('password'),
   },
   {
     component: 'TextInput',
     label: t('confirmPassword'),
     type: 'password',
     key: 'confirmPassword',
+    appendIcon: appendIconProp('confirmPassword'),
   },
 ];
 
@@ -120,7 +142,7 @@ const onSubmitAuth = async () => {
     if (isLogin.value) {
       await userStore.login(bodyForm.value.email, bodyForm.value.password);
     } else {
-      await userStore.register(
+      await userStore.signup(
         bodyForm.value.name,
         bodyForm.value.email,
         bodyForm.value.password,

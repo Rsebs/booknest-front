@@ -1,7 +1,7 @@
 import Swal, { type SweetAlertOptions } from 'sweetalert2';
 
 const generalConfig: SweetAlertOptions = {
-  theme: 'auto',
+  theme: 'light',
 
   didOpen: () => {
     (document.querySelector('.swal2-container') as HTMLElement | null)?.style.setProperty(

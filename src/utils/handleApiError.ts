@@ -16,7 +16,7 @@ export function handleApiError(error: unknown) {
   ) {
     for (const keyError in error.errorResponse.errors) {
       const messageError = error.errorResponse.errors[keyError];
-      msgError += `${keyError}: ${messageError.join(', ')}\n`;
+      msgError += `${messageError.join(', ')}\n`;
     }
   }
 

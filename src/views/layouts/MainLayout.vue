@@ -12,12 +12,28 @@
       <template #append>
         <v-btn icon="mdi-shopping-outline" variant="text" class="mr-4" />
         <v-btn
+          v-if="!userStore.isAuthenticated"
           :text="$t('enter')"
           color="primary"
           rounded="xl"
           variant="flat"
           @click="openModalAuth('login')"
         />
+
+        <v-menu v-if="userStore.isAuthenticated">
+          <template #activator="{ props }">
+            <v-btn icon="mdi-account" variant="text" v-bind="props" />
+          </template>
+
+          <v-list>
+            <v-list-item class="cursor-pointer">
+              <span>Perfil</span>
+            </v-list-item>
+            <v-list-item class="cursor-pointer" @click="userStore.logout()">
+              <span>Cerrar sesión</span>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
 
       <template #extension>
@@ -58,6 +74,9 @@
 <script lang="ts" setup>
 import { ref, type Ref } from 'vue';
 import AuthForm from '@/components/forms/auth/AuthForm.vue';
+import { useUserStore } from '@/stores/userStore';
+
+const userStore = useUserStore();
 
 type AuthType = 'login' | 'register';
 const openModal = ref(false);
