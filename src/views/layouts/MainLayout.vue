@@ -36,8 +36,12 @@
 
             <v-list density="compact" rounded="lg">
               <v-list-item class="px-4 py-2">
-                <v-list-item-title class="font-weight-bold">{{ userStore.user.name }}</v-list-item-title>
-                <v-list-item-subtitle class="text-caption">{{ userStore.user.email }}</v-list-item-subtitle>
+                <v-list-item-title class="font-weight-bold">{{
+                  userStore.user.name
+                }}</v-list-item-title>
+                <v-list-item-subtitle class="text-caption">{{
+                  userStore.user.email
+                }}</v-list-item-subtitle>
               </v-list-item>
               <v-divider />
               <v-list-item class="cursor-pointer" @click="userStore.logout()">
@@ -71,13 +75,13 @@
             <div>
               <p class="font-weight-semibold font-secondary">Booknest</p>
               <p class="font-weight-light text-disabled" :style="{ fontSize: '0.9rem' }">
-                Una librería para tardes lentas (Demo Frontend).
+                Una librería para tardes lentas (Demo).
               </p>
             </div>
           </v-col>
           <v-col cols="12" md="6" class="text-center text-md-right">
             <p class="font-weight-light text-disabled" :style="{ fontSize: '0.9rem' }">
-              &copy; {{ new Date().getFullYear() }} BOOKNEST - Frontend Demo
+              &copy; {{ new Date().getFullYear() }} BOOKNEST - Demo
             </p>
           </v-col>
         </v-row>
