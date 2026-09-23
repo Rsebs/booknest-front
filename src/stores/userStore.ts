@@ -1,78 +1,70 @@
 import { computed, ref, type Ref } from 'vue';
 import { defineStore } from 'pinia';
-import { transformUser } from '@/api/transformers/auth.transformer';
-import AxiosService from '@/api/services/AxiosService';
-import type { ApiLoginUser } from '@/api/types/auth.api';
 import type { User } from '@/models/user.model';
 import { showToast } from '@/utils/vue3Toastify';
 
 export const useUserStore = defineStore(
   'user',
   () => {
-    // Init
     const userNotLogged: User = {
       id: 0,
       email: '',
       name: '',
     };
 
-    // State
     const user: Ref<User> = ref(userNotLogged);
     const apiToken: Ref<string | null> = ref(null);
 
-    // Getters
     const isAuthenticated = computed(() => !!apiToken.value);
 
-    // Actions
-    async function login(email: string, password: string): Promise<boolean> {
-      const response = await AxiosService.post<ApiLoginUser>('login', { email, password });
-      const transformedUser = transformUser(response.data);
+    async function login(email: string, _password: string): Promise<boolean> {
+      // Simulate backend response
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      user.value = transformedUser;
-      apiToken.value = response.data.api_token;
+      const nameFromEmail = email.split('@')[0] || 'Usuario';
+      const formattedName = nameFromEmail.charAt(0).toUpperCase() + nameFromEmail.slice(1);
 
-      showToast(`Bienvenido, ${user.value.name}`);
+      user.value = {
+        id: Math.floor(Math.random() * 1000) + 1,
+        email: email.trim(),
+        name: formattedName,
+      };
+      apiToken.value = `demo-token-${Date.now()}`;
 
+      showToast(`Bienvenido de nuevo, ${user.value.name}`);
       return isAuthenticated.value;
     }
 
     async function signup(
       name: string,
       email: string,
-      password: string,
-      passwordConfirmation: string,
+      _password: string,
+      _passwordConfirmation: string,
     ): Promise<boolean> {
-      const response = await AxiosService.post<ApiLoginUser>('signup', {
-        name,
-        email,
-        password,
-        password_confirmation: passwordConfirmation,
-      });
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-      const transformedUser = transformUser(response.data);
-      user.value = transformedUser;
-      apiToken.value = response.data.api_token;
+      user.value = {
+        id: Math.floor(Math.random() * 1000) + 1,
+        email: email.trim(),
+        name: name.trim() || 'Nuevo Usuario',
+      };
+      apiToken.value = `demo-token-${Date.now()}`;
 
-      showToast(`Bienvenido, ${user.value.name}`);
-
+      showToast(`¡Cuenta creada con éxito! Bienvenido, ${user.value.name}`);
       return isAuthenticated.value;
     }
 
     async function logout() {
-      await AxiosService.post('logout');
+      await new Promise((resolve) => setTimeout(resolve, 150));
       user.value = userNotLogged;
       apiToken.value = null;
+      showToast('Has cerrado sesión correctamente');
     }
 
     return {
-      // State
       user,
       apiToken,
-
-      // Getters
       isAuthenticated,
-
-      // Actions
       login,
       signup,
       logout,
@@ -80,7 +72,7 @@ export const useUserStore = defineStore(
   },
   {
     persist: {
-      storage: sessionStorage,
+      storage: localStorage,
     },
   },
 );

@@ -1,8 +1,7 @@
-import { transformLookup } from '../transformers/lookup.transformer';
-import AxiosService from './AxiosService';
-import type { ApiLookup } from '../types/lookup.api';
+import type { Lookup } from '@/models/lookup.model';
+import { INITIAL_CATEGORIES } from '../mockData';
 
-export async function fetchLookups(resource: string) {
-  const response = await AxiosService.get<ApiLookup[]>(`lookups/${resource}`);
-  return response.data.map(transformLookup);
+export async function fetchLookups(_resource: string): Promise<Lookup[]> {
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  return INITIAL_CATEGORIES;
 }

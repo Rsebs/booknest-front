@@ -10,5 +10,10 @@ export function transformBook(book: ApiBook): Book {
     coverUrl: book.cover_url,
     fileUrl: book.file_url,
     price: book.price,
+    categoryId: 1,
+    categoryName: 'General',
+    rating: 4.5,
+    ratingCount: 1,
+    comments: [],
   };
 }

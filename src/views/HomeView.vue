@@ -2,13 +2,13 @@
   <v-main class="my-16">
     <v-container class="text-center">
       <span class="text-uppercase font-weight-light">
-        <v-icon icon="mdi-shimmer" /> Una librería para tardes lentas
+        <v-icon icon="mdi-shimmer" color="primary" /> Una librería para tardes lentas
       </span>
       <h1 class="font-weight-semibold mb-6 mt-2">
         Piérdete en una tarde más
         <span class="font-italic text-primary font-weight-semibold">silenciosa</span>.
       </h1>
-      <p class="my-2 font-weight-light">
+      <p class="my-2 font-weight-light text-medium-emphasis">
         Volúmenes cuidadosamente seleccionados, clásicos olvidados y voces contemporáneas pensadas
         para leer despacio.
       </p>
@@ -17,7 +17,7 @@
         v-model="search"
         bg-color="white"
         color="primary"
-        placeholder="Busca por autor, título o estado de ánimo..."
+        placeholder="Busca por autor, título o categoría..."
         prepend-inner-icon="mdi-magnify"
         rounded="xl"
         variant="outlined"
@@ -25,76 +25,76 @@
         @keydown.enter="handleSearch"
       >
         <template #append-inner>
-          <v-btn type="submit" color="primary" variant="flat" rounded="xl" @click="handleSearch">
+          <v-btn color="primary" variant="flat" rounded="xl" @click="handleSearch">
             {{ $t('explore') }}
           </v-btn>
         </template>
       </v-text-field>
     </v-container>
+
+    <!-- Featured -->
+    <section class="my-8" v-if="books.length > 0">
+      <v-container>
+        <div class="border-b pb-5 mb-8">
+          <v-row align="center">
+            <v-col class="text-left">
+              <h2 class="font-secondary font-weight-bold">Selección destacada</h2>
+            </v-col>
+            <v-col class="text-right">
+              <v-btn
+                :to="{ name: 'catalog' }"
+                class="text-primary font-weight-medium"
+                variant="text"
+              >
+                Ver todo <v-icon icon="mdi-arrow-right" class="ml-1" />
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
+
+        <v-row align="stretch">
+          <v-col cols="12" sm="6" md="4" v-for="book in books.slice(0, 3)" :key="book.id" class="d-flex">
+            <CardBookPreview :book="book" @click-book="openBookDetail" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </section>
+
+    <!-- Latest -->
+    <section class="my-8" v-if="books.length > 0">
+      <v-container>
+        <div class="border-b pb-5 mb-8">
+          <v-row align="center">
+            <v-col class="text-left">
+              <h2 class="font-secondary font-weight-bold">Todos los libros</h2>
+            </v-col>
+            <v-col class="text-right">
+              <v-btn
+                :to="{ name: 'catalog' }"
+                class="text-primary font-weight-medium"
+                variant="text"
+              >
+                Ver catálogo completo <v-icon icon="mdi-arrow-right" class="ml-1" />
+              </v-btn>
+            </v-col>
+          </v-row>
+        </div>
+
+        <v-row align="stretch">
+          <v-col cols="12" sm="6" md="3" v-for="book in books.slice(3, 11)" :key="book.id" class="d-flex">
+            <CardBookPreview :book="book" @click-book="openBookDetail" />
+          </v-col>
+        </v-row>
+      </v-container>
+    </section>
+
+    <BookDetailModal
+      v-model="showDetailModal"
+      :book="selectedBook"
+      @comment-added="onCommentAdded"
+      @open-login="openLoginFromModal"
+    />
   </v-main>
-
-  <!-- Featured -->
-  <section class="my-8" v-if="books.length > 0">
-    <v-container>
-      <div class="border-b pb-5 mb-14">
-        <v-row>
-          <v-col class="text-left">
-            <h2>Selección destacada</h2>
-          </v-col>
-          <v-col class="text-right">
-            <v-btn
-              :to="{ name: 'catalog' }"
-              class="text-xs uppercase tracking-widest text-primary hover:text-foreground transition-colors flex items-center gap-2"
-              variant="text"
-            >
-              Ver todo <v-icon icon="mdi-arrow-right" />
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
-
-      <v-row>
-        <v-col cols="12" sm="4" v-for="book in books.slice(0, 3)" :key="book.id">
-          <CardBookPreview :book="book" />
-        </v-col>
-      </v-row>
-    </v-container>
-  </section>
-
-  <!-- Latest -->
-  <section class="my-8">
-    <v-container>
-      <div class="border-b pb-5 mb-14">
-        <v-row>
-          <v-col class="text-left">
-            <h2>Últimos llegados</h2>
-          </v-col>
-          <v-col class="text-right">
-            <v-btn
-              :to="{ name: 'catalog' }"
-              class="text-xs uppercase tracking-widest text-primary hover:text-foreground transition-colors flex items-center gap-2"
-              variant="text"
-            >
-              Ver todo <v-icon icon="mdi-arrow-right" />
-            </v-btn>
-          </v-col>
-        </v-row>
-      </div>
-
-      <v-row v-if="books.length > 0">
-        <v-col cols="12" sm="3" v-for="book in books" :key="book.id">
-          <CardBookPreview :book="book" />
-        </v-col>
-      </v-row>
-      <div v-else class="text-center">
-        <h3 class="py-2">Aún no hay libros en los anaqueles.</h3>
-
-        <p class="py-2 text-disabled">
-          ¿Eres autor? <a href="#" class="text-primary text-decoration-none">Únete</a> y publica el primero.
-        </p>
-      </div>
-    </v-container>
-  </section>
 </template>
 
 <script lang="ts" setup>
@@ -102,19 +102,39 @@ import { onMounted, ref } from 'vue';
 import { useBook } from '../composables/useBook';
 import { useRouter } from 'vue-router';
 import CardBookPreview from '@/components/CardBookPreview.vue';
+import BookDetailModal from '@/components/BookDetailModal.vue';
+import type { Book } from '@/models/book.model';
 
 const router = useRouter();
 const search = ref('');
+const showDetailModal = ref(false);
+const selectedBook = ref<Book | null>(null);
 
 const { books, getBooks } = useBook();
 
 const handleSearch = () => {
-  //todo: Push with the search query param
-  router.push({ name: 'catalog' });
+  router.push({ name: 'catalog', query: { q: search.value } });
+};
+
+const openBookDetail = (book: Book) => {
+  selectedBook.value = book;
+  showDetailModal.value = true;
+};
+
+const onCommentAdded = (updatedBook: Book) => {
+  selectedBook.value = updatedBook;
+  getBooks(1, 12);
+};
+
+const openLoginFromModal = () => {
+  const authBtn = document.querySelector('[data-demo-auth-trigger]') as HTMLElement;
+  if (authBtn) {
+    authBtn.click();
+  }
 };
 
 onMounted(() => {
-  getBooks(1, 8);
+  getBooks(1, 12);
 });
 </script>
 
